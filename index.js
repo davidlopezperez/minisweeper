@@ -1,16 +1,16 @@
 const express = require('express');
 const connectDB = require('./config/db');
-
+const bodyParser = require('body-parser');
+const cors = require('cors')
 const app = express();
 connectDB();
 
+app.use(bodyParser.json());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
 
-const PORT = 4000;
 app.use('/api/game', require('./routes/game'));
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server listening on port ${PORT}`)
-});
+module.exports = app;
 
