@@ -10,19 +10,25 @@ Mira Deployment para conocer como desplegar el proyecto.
 
 ## Instalación 🔧
 Si quieres obtener el juego de manera local, es muy sencillo:
+```
 -Cloná el proyecto: git clone https://github.com/davidlopezperez/minesweeper-challenge.git
 -Abrelo en tu editor de código favorito, y en tu consola instala todas las dependencias: 
+```
 ```bash
 npm install
 ```
 
 ## Construido con 🛠️
+```
 -nodeJs BACK-END
 -ReactJs FRONT-END
+```
 
 ## Deploy en
+```
 -aws lambda BACK-END 
 -netlify FRONT-END
+```
 
 ## Autores ✒️
 David López
