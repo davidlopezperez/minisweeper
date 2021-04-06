@@ -1,10 +1,12 @@
-const GameModel = require('../models/GameModel');
+const UsersModel = require('../models/UsersModel');
+
+//Middleware que detecta si un jugador es un jugador nuevo o uno ya existente.
 module.exports = validUserName = async (req, res, next) => {
     try {
         const { userName } = req.body;
-        const game = await GameModel.findOne({userName : userName});
-        if(game){
-            return res.status(400).json({message : 'Oops esto nombre de usuario no esta disponible'});
+        const user = await UsersModel.findOne({userName : userName});
+        if(user){
+            res.user = user;
         }
         return next();
     } catch (error) {

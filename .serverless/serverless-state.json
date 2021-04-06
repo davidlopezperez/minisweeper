@@ -175,7 +175,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/minisweeper/dev/1617621886315-2021-04-05T11:24:46.315Z/minisweeper.zip"
+                "S3Key": "serverless/minisweeper/dev/1617680714737-2021-04-06T03:45:14.737Z/minisweeper.zip"
               },
               "Handler": "handler.handler",
               "Runtime": "nodejs12.x",
@@ -193,14 +193,14 @@
               "MinesweeperLogGroup"
             ]
           },
-          "MinesweeperLambdaVersion71bDyC7EbGjPc3iOCrSqzt6xJzsnY2RnMi03x4pE": {
+          "MinesweeperLambdaVersions9JQkP731RK05jzAEVk4UcnTIxfFbPTsdA006vBKI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MinesweeperLambdaFunction"
               },
-              "CodeSha256": "o0XXj/wKaTl2hlAhyS8ylPo8iPNQQejkFskBp+PyG48="
+              "CodeSha256": "SgNG/8MSKlxgzXlqZWc161m2KaAVnPELsWqkTO/XIfI="
             }
           },
           "ApiGatewayRestApi": {
@@ -249,6 +249,42 @@
                 "Ref": "ApiGatewayResourceApiGame"
               },
               "PathPart": "new",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceApiGameSave": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceApiGame"
+              },
+              "PathPart": "save",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceApiGameSaveIdVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceApiGameSave"
+              },
+              "PathPart": "{id}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceApiGameGet": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceApiGame"
+              },
+              "PathPart": "get",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -308,6 +344,96 @@
               },
               "ResourceId": {
                 "Ref": "ApiGatewayResourceApiGameNew"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodApiGameSaveIdVarOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,PUT'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceApiGameSaveIdVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodApiGameGetOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceApiGameGet"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -402,6 +528,92 @@
               "MethodResponses": []
             }
           },
+          "ApiGatewayMethodApiGameSaveIdVarPut": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PUT",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceApiGameSaveIdVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "MinesweeperLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodApiGameGetPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceApiGameGet"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "MinesweeperLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
           "ApiGatewayMethodProxyVarAny": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -445,7 +657,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1617621876566": {
+          "ApiGatewayDeployment1617680700974": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -455,8 +667,12 @@
             },
             "DependsOn": [
               "ApiGatewayMethodApiGameNewOptions",
+              "ApiGatewayMethodApiGameSaveIdVarOptions",
+              "ApiGatewayMethodApiGameGetOptions",
               "ApiGatewayMethodProxyVarOptions",
               "ApiGatewayMethodApiGameNewPost",
+              "ApiGatewayMethodApiGameSaveIdVarPut",
+              "ApiGatewayMethodApiGameGetPost",
               "ApiGatewayMethodProxyVarAny"
             ]
           },
@@ -507,7 +723,7 @@
           "MinesweeperLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MinesweeperLambdaVersion71bDyC7EbGjPc3iOCrSqzt6xJzsnY2RnMi03x4pE"
+              "Ref": "MinesweeperLambdaVersions9JQkP731RK05jzAEVk4UcnTIxfFbPTsdA006vBKI"
             }
           },
           "ServiceEndpoint": {
@@ -652,6 +868,58 @@
           },
           {
             "http": {
+              "path": "api/game/save/{id}",
+              "method": "put",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "PUT"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
+              "path": "api/game/get",
+              "method": "post",
+              "cors": {
+                "origins": [
+                  "*"
+                ],
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent"
+                ],
+                "allowCredentials": false
+              },
+              "integration": "AWS_PROXY"
+            }
+          },
+          {
+            "http": {
               "path": "{proxy}",
               "method": "any",
               "cors": {
@@ -683,7 +951,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "MinesweeperLambdaVersion71bDyC7EbGjPc3iOCrSqzt6xJzsnY2RnMi03x4pE"
+        "versionLogicalId": "MinesweeperLambdaVersions9JQkP731RK05jzAEVk4UcnTIxfFbPTsdA006vBKI"
       }
     },
     "configValidationMode": "warn",
@@ -705,7 +973,7 @@
     "artifact": "C:\\Users\\jgpr1\\Desktop\\minisweeper\\minisweeper\\.serverless\\minisweeper.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/minisweeper/dev/1617621886315-2021-04-05T11:24:46.315Z",
+    "artifactDirectoryName": "serverless/minisweeper/dev/1617680714737-2021-04-06T03:45:14.737Z",
     "artifact": "minisweeper.zip"
   }
 }

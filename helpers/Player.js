@@ -1,6 +1,7 @@
 module.exports = class Player{
 
-    static createNewUser(board, userName){
-        board.player.userName = userName;
+    //Función que crea dentro del objeto board el jugador.
+    static createNewUser(board, user){
+        board.player = user._id;
     }
 }

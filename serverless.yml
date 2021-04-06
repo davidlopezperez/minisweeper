@@ -66,6 +66,14 @@ functions:
           method : post
           cors : true
       - http:
+          path : /api/game/save/{id}
+          method : put
+          cors : true
+      - http:
+          path : /api/game/get
+          method : post
+          cors : true
+      - http:
           path : /{proxy}
           method : any
           cors : true
