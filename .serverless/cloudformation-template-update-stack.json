@@ -161,7 +161,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/minisweeper/dev/1617680714737-2021-04-06T03:45:14.737Z/minisweeper.zip"
+          "S3Key": "serverless/minisweeper/dev/1617759717309-2021-04-07T01:41:57.309Z/minisweeper.zip"
         },
         "Handler": "handler.handler",
         "Runtime": "nodejs12.x",
@@ -179,14 +179,14 @@
         "MinesweeperLogGroup"
       ]
     },
-    "MinesweeperLambdaVersions9JQkP731RK05jzAEVk4UcnTIxfFbPTsdA006vBKI": {
+    "MinesweeperLambdaVersionr9jmBJHJyYig5pU3SYjLhAgNyTecFEPYEQPtDVBqk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MinesweeperLambdaFunction"
         },
-        "CodeSha256": "SgNG/8MSKlxgzXlqZWc161m2KaAVnPELsWqkTO/XIfI="
+        "CodeSha256": "VjNRcsMQ5tULGOW0k4ydPmHuj4Sewxhbc+XoIHBmLbA="
       }
     },
     "ApiGatewayRestApi": {
@@ -271,6 +271,30 @@
           "Ref": "ApiGatewayResourceApiGame"
         },
         "PathPart": "get",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceApiGameGetDashonlyDashone": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceApiGame"
+        },
+        "PathPart": "get-only-one",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceApiGameGetDashonlyDashoneIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceApiGameGetDashonlyDashone"
+        },
+        "PathPart": "{id}",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -420,6 +444,51 @@
         },
         "ResourceId": {
           "Ref": "ApiGatewayResourceApiGameGet"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodApiGameGetDashonlyDashoneIdVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceApiGameGetDashonlyDashoneIdVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -600,6 +669,49 @@
         "MethodResponses": []
       }
     },
+    "ApiGatewayMethodApiGameGetDashonlyDashoneIdVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceApiGameGetDashonlyDashoneIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "MinesweeperLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
     "ApiGatewayMethodProxyVarAny": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -643,7 +755,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1617680700974": {
+    "ApiGatewayDeployment1617759707243": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -655,10 +767,12 @@
         "ApiGatewayMethodApiGameNewOptions",
         "ApiGatewayMethodApiGameSaveIdVarOptions",
         "ApiGatewayMethodApiGameGetOptions",
+        "ApiGatewayMethodApiGameGetDashonlyDashoneIdVarOptions",
         "ApiGatewayMethodProxyVarOptions",
         "ApiGatewayMethodApiGameNewPost",
         "ApiGatewayMethodApiGameSaveIdVarPut",
         "ApiGatewayMethodApiGameGetPost",
+        "ApiGatewayMethodApiGameGetDashonlyDashoneIdVarGet",
         "ApiGatewayMethodProxyVarAny"
       ]
     },
@@ -709,7 +823,7 @@
     "MinesweeperLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MinesweeperLambdaVersions9JQkP731RK05jzAEVk4UcnTIxfFbPTsdA006vBKI"
+        "Ref": "MinesweeperLambdaVersionr9jmBJHJyYig5pU3SYjLhAgNyTecFEPYEQPtDVBqk"
       }
     },
     "ServiceEndpoint": {

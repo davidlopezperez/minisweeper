@@ -40,3 +40,13 @@ exports.getGamesByPlayer = async (req, res) => {
         res.status(500).json({message : error});
     }
 }
+
+exports.getOnlyOneGame = async (req, res) => {
+    try {
+        const game = res.game;
+        res.status(200).json(game);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message : error});
+    }
+}

@@ -23,4 +23,9 @@ router.post('/get',
     boardController.getGamesByPlayer
 );
 
+router.get('/get-only-one/:id', 
+    validGame,
+    boardController.getOnlyOneGame
+);
+
 module.exports = router;

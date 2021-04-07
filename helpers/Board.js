@@ -63,6 +63,7 @@ module.exports = class Board {
               if (i < 90 && !isLeftEdge && gameBoard[i -1 +columns].value === Board.BOMB_VALUE) total ++
               if (i < 88 && !isRightEdge && gameBoard[i +1 +columns].value === Board.BOMB_VALUE) total ++
               if (i < 89 && gameBoard[i +columns].value === Board.BOMB_VALUE) total ++
+              if(total > 3) total = 0;
               gameBoard[i].value = total;
             }
             

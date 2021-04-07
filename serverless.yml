@@ -74,6 +74,10 @@ functions:
           method : post
           cors : true
       - http:
+          path : /api/game/get-only-one/{id}
+          method : get
+          cors : true
+      - http:
           path : /{proxy}
           method : any
           cors : true
