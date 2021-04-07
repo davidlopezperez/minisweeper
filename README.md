@@ -6,8 +6,8 @@ El juego consiste en que debes ir destapando y descubriendo lo que esconde el ta
 
 Puedes escoger tres niveles, facil, medio y dificil. Mientras más dificil lo pongas mayor cantidad de bombas serán repartidas en tu tablero.
 
-Mira Deployment para conocer como desplegar el proyecto.
--deploy
+Mirá la versión web
+https://minesweeper-challenge-tap.netlify.app/
 
 ## Instalación 🔧
 Si quieres obtener el juego de manera local, es muy sencillo:
